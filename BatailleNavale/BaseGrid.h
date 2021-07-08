@@ -1,11 +1,12 @@
 #pragma once
 
 #include <iostream>
+#include "Cell.h"
 using namespace std;
 
 class BaseGrid
 {
-protected: char** table; // on peut aussi utiliser la classe Vector<char> de la librairie std
+protected: Cell*** table; // on peut aussi utiliser la classe Vector<char> de la librairie std
 	       int sizeX = 0, sizeY = 0, iterPos = -1;
 		   string getLineAsString(int pos);
 public: BaseGrid(int sizeX = 10, int sizeY = 10, char fill = ' ');

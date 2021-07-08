@@ -20,14 +20,15 @@ void display_grids(BaseGrid* g1, BaseGrid* g2, BaseGrid* g3) {
 
 int main()
 {
-    GridWithHeaders *player1 = new GridWithHeaders(10, 10, '~'), *player2 = new GridWithHeaders(10, 10, '~');
-    BaseGrid *space = new BaseGrid(10, 12, ' ');
-    display_grids(player1, space, player2);
-    Ship* s;
-    if (!player1->addShip(s = new Ship(10, 3))) {
-        cout << "Emplacement déjà occupé !";
-        delete s;
+    GridWithHeaders *player1 = new GridWithHeaders(10, 10, string ("Joueur 1")), *player2 = new GridWithHeaders(10, 10, string ( "Joueur 2"));
+    BaseGrid *space = new BaseGrid(10, 14);
+    for (int type = ShipType::destroyer; type != ShipType::last; type++) {
+        system("cls");
+        display_grids(player1, space, player2);
+        cout << "Saisie des bateaux du joueur 1" << endl << endl;
+        player1->addShip(static_cast<ShipType>(type));
     }
+
     delete player1; 
     delete player2;
     delete space;
