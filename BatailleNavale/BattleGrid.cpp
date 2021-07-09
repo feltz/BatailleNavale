@@ -48,6 +48,15 @@ Ship* BattleGrid::isCellOccupied(const Cell & celltoTest)
     return nullptr;
 }
 
+void BattleGrid::setShipVisibility(bool visible) {
+    for (int i = 0; i < m_nb_ships; i++) {
+        Cell* cell = m_ships[i]->getFirstCell();
+        do {
+            cell->setVisibility(visible);
+        } while (cell = m_ships[i]->getNextCell());
+    }
+}
+
 BattleGrid::~BattleGrid()
 {
     for (int i = 0; i < sizeY; i++) {

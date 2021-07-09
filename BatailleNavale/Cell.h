@@ -15,6 +15,7 @@ class Cell
 {
 protected:
 	int m_x, m_y, m_fill;
+	bool m_visible = true;
 public:
 	Cell(int x = 0, int y = 0, char fill = ' ') : m_x(x), m_y(y), m_fill (fill) {};
 	inline virtual char toChar() const { return m_fill; }
@@ -22,6 +23,7 @@ public:
 	bool hasSameCoordinates (const Cell&) const;
 	inline int getX() const { return m_x; }
 	inline int getY() const { return m_y; }
+	inline void setVisibility(bool visible) { m_visible = visible; }
 };
 
 class CellShip : public Cell {

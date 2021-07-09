@@ -17,5 +17,7 @@ public:
 	~BattleGrid();
 	void addShip(ShipType);
 	Ship* isCellOccupied(const Cell&);
+	void setShipVisibility(bool);
+	inline string getPlayerName () const { return m_player_name; }
 };
 
