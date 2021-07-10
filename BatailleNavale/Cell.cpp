@@ -1,4 +1,5 @@
 #include "Cell.h"
+#include "Ship.h"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -41,10 +42,20 @@ int CellShip::ask_for_coord(string coord_type, int max) {
 	return result;
 }
 
-char CellShip::toChar() const {
+unsigned char CellShip::toChar() const {
 	switch (m_state) {
 		case CellState::normal: if (m_visible) return '#'; else return '~';
 		case CellState::touched: return 'x';
 		case CellState::dead: return 254; // black square
 	}
+}
+
+void CellShip::setState(const CellState & state) {
+	m_state = state;
+}
+
+void CellShip::touched()
+{
+	if (m_state == CellState::normal)
+		m_ship->touched(this);
 }

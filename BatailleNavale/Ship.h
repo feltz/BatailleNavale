@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef SHIP_H
-#define SHIP_H
-
 #include <string>
 
 class Cell;
@@ -20,52 +17,52 @@ private:
 protected: 
 	CellShip* m_cells[5];
 	int m_nb_cells, m_iter_cell = 0, m_lifes;
-	string m_text;
+	string m_text = "";
  
-	Ship(const Cell & begin, int nb_cells, bool hor, string text);
+	Ship(const int x, const int y, int nb_cells, bool hor = true);
 	Ship(int coord_max, int nb_cells, string text);
 public:
 	~Ship();
-	Cell* getFirstCell();
-	Cell* getNextCell();
+	CellShip* getFirstCell();
+	CellShip* getNextCell();
 	int get_nb_cells();
 	string get_text();
+	void touched(CellShip*);
+	bool isSunk();
 };
 
 class Destroyer : public Ship
 {
 public:
-	Destroyer(const Cell& begin, bool hor) : Ship(begin, 2, hor, "Torpilleur") {};
+	Destroyer(const int x, const int y, bool hor = true) : Ship(x, y, 2, hor) {};
 	Destroyer(int coord_max) : Ship(coord_max, 2, "Torpilleur") {};
 };
-
 
 class Submarine : public Ship
 {
 public:
-	Submarine (const Cell& begin, bool hor) : Ship (begin, 3, hor, "Sous-marin") {};
-	Submarine (int coord_max) : Ship(coord_max, 3, "Sous-marin") {};
+	Submarine(const int x, const int y, bool hor = true) : Ship(x, y, 2, hor) {};
+	Submarine(int coord_max) : Ship(coord_max, 2, "Sous-marin") {};
 };
 
 class Cruiser : public Ship
 {
 public:
-	Cruiser (const Cell& begin, bool hor) : Ship(begin, 3, hor, "Contre - Torpilleur") {};
-	Cruiser (int coord_max) : Ship(coord_max, 3, "Contre - Torpilleur") {};
+	Cruiser (const int x, const int y, bool hor = true) : Ship(x, y, 3, hor) {};
+	Cruiser (int coord_max) : Ship (coord_max, 3, "Contre - Torpilleur") {};
 };
 
 class Battleship : public Ship
 {
 public:
-	Battleship (const Cell& begin, bool hor) : Ship(begin, 4, hor, "Croiseur") {};
-	Battleship (int coord_max) : Ship(coord_max, 4, "Croiseur") {};
+	Battleship (const int x, const int y, bool hor = true) : Ship(x, y, 4, hor) {};
+	Battleship (int coord_max) : Ship (coord_max, 4, "Croiseur") {};
 };
 
 class Carrier : public Ship
 {
 public:
-	Carrier (const Cell& begin, bool hor) : Ship(begin, 5, hor, "Porte-avions") {};
-	Carrier (int coord_max) : Ship(coord_max, 5, "Porte-avions") {};
+	Carrier (const int x, const int y, bool hor = true) : Ship(x, y, 5, hor) {};
+	Carrier (int coord_max) : Ship (coord_max, 5, "Porte-avions") {};
 };
 
-#endif

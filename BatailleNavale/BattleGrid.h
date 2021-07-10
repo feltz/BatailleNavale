@@ -16,7 +16,8 @@ public:
 	BattleGrid(int sizeX = 10, int sizeY = 10, string player_name = "");
 	~BattleGrid();
 	void addShip(ShipType);
-	Ship* isCellOccupied(const Cell&);
+	void insertShip(Ship*);
+	CellShip* isCellOccupied(const Cell&);
 	void setShipVisibility(bool);
 	inline string getPlayerName () const { return m_player_name; }
 };

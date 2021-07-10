@@ -18,7 +18,7 @@ protected:
 	bool m_visible = true;
 public:
 	Cell(int x = 0, int y = 0, char fill = ' ') : m_x(x), m_y(y), m_fill (fill) {};
-	inline virtual char toChar() const { return m_fill; }
+	inline virtual unsigned char toChar() const { return m_fill; }
 	inline void changeFill(char fill) { m_fill = fill; }
 	bool hasSameCoordinates (const Cell&) const;
 	inline int getX() const { return m_x; }
@@ -34,7 +34,9 @@ private:
 public:
 	CellShip(int x, int y, Ship* ship = nullptr) : Cell(x, y, '~') , m_ship(ship) {};
 	CellShip(int coord_max);
-	char toChar() const;
+	unsigned char toChar() const;
+	void touched();
+	void setState(const CellState&);
 };
 
 #endif

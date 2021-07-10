@@ -1,5 +1,13 @@
 #include "BattleGrid.h"
 
+void BattleGrid::insertShip(Ship*ship) {
+    m_ships[m_nb_ships++] = ship;
+    Cell* cell = ship->getFirstCell();
+    do {
+        table[cell->getX()][cell->getY()] = cell;
+    } while ((cell = ship->getNextCell()));
+}
+
 void BattleGrid::addShip (ShipType type)
 {
     Ship* ship = nullptr;
@@ -23,11 +31,7 @@ void BattleGrid::addShip (ShipType type)
             ship = nullptr;
         }
     } while (!ship);
-    m_ships[m_nb_ships++] = ship;
-    Cell* cell = ship->getFirstCell();
-    do {
-        table[cell->getX()][cell->getY()] = cell;
-    } while ((cell = ship->getNextCell()));
+    insertShip(ship);
 }
 
 BattleGrid::BattleGrid(int sizeX, int sizeY, string player_name) : BaseGrid(sizeX, sizeY, '~'), m_player_name (player_name), m_nb_ships (0)
@@ -36,13 +40,13 @@ BattleGrid::BattleGrid(int sizeX, int sizeY, string player_name) : BaseGrid(size
         m_ships[i] = nullptr;
 }
 
-Ship* BattleGrid::isCellOccupied(const Cell & celltoTest)
+CellShip* BattleGrid::isCellOccupied(const Cell & celltoTest)
 {
     for (int i = 0; i < m_nb_ships; i++) {
-        Cell* cell = m_ships[i]->getFirstCell();
+        CellShip* cell = m_ships[i]->getFirstCell();
         do {
             if (celltoTest.hasSameCoordinates (*cell))
-                return m_ships[i];
+                return cell;
         } while (cell = m_ships[i]->getNextCell());
     }
     return nullptr;

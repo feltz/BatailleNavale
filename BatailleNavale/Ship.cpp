@@ -3,19 +3,13 @@
 #include <iostream>
 using namespace std;
 
-Ship::Ship(const Cell& begin, int nb_cells, bool hor, string text) 
+Ship::Ship(const int x, const int y, int nb_cells, bool hor) : m_nb_cells(nb_cells), m_lifes(nb_cells)
 {
-	m_nb_cells = nb_cells;
-	m_lifes = nb_cells;
-	m_text = text;
-	createCells(begin, hor);
+	createCells(Cell (x, y), hor);
 }
 
-Ship::Ship(int coord_max, int nb_cells, string text)
+Ship::Ship(int coord_max, int nb_cells, string text) : m_nb_cells(nb_cells), m_lifes(nb_cells), m_text (text)
 {
-	m_nb_cells = nb_cells;
-	m_lifes = nb_cells;
-	m_text = text;
 	cout << "Saisie du " + m_text << endl;
 	CellShip begin = CellShip(coord_max);
 	createCells(begin, ask_for_direction());
@@ -55,19 +49,32 @@ bool Ship::ask_for_direction() {
 	return res == 1;
 }
 
+void Ship::touched(CellShip* cell_touched) {
+	m_lifes--;
+	cell_touched->setState(CellState::touched);
+	if (m_lifes == 0)
+		for (int i = 0; i < m_nb_cells; i++)
+			m_cells[i]->setState(CellState::dead);
+
+}
+
+bool Ship::isSunk() {
+	return m_lifes == 0;
+}
+
 Ship::~Ship()
 {
 	for (int i = 0; i < m_nb_cells; i++)
 		delete m_cells[i];
 }
 
-Cell* Ship::getFirstCell()
+CellShip* Ship::getFirstCell()
 {
 	m_iter_cell = 0;
 	return m_cells[m_iter_cell];
 }
 
-Cell* Ship::getNextCell()
+CellShip* Ship::getNextCell()
 {
 	m_iter_cell++;
 	if (m_iter_cell < m_nb_cells)
