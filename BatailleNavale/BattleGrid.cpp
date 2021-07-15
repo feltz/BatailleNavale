@@ -1,10 +1,19 @@
 #include "BattleGrid.h"
 
+BattleGrid::BattleGrid(int sizeX, int sizeY, string player_name) : BaseGrid(sizeX, sizeY, '~'), m_player_name(player_name), m_nb_ships(0)
+{
+    for (int i = 0; i < NB_SHIPS; i++)
+        m_ships[i] = nullptr;
+}
+
 void BattleGrid::insertShip(Ship*ship) {
     m_ships[m_nb_ships++] = ship;
     Cell* cell = ship->getFirstCell();
     do {
-        table[cell->getX()][cell->getY()] = cell;
+        int x = cell->getX(), y = cell->getY();
+        if (table[x][y])
+            delete table[x][y];
+        table[x][y] = cell;
     } while ((cell = ship->getNextCell()));
 }
 
@@ -14,11 +23,11 @@ void BattleGrid::addShip (ShipType type)
     do {
         bool collision = false;
         switch (type) {
-            case ShipType::destroyer: ship = new Destroyer(sizeX); break; 
-            case ShipType::submarine: ship = new Submarine(sizeX); break;
-            case ShipType::cruiser: ship = new Cruiser(sizeX); break;
-            case ShipType::battleship: ship = new Battleship(sizeX); break;
-            case ShipType::carrier: ship = new Carrier(sizeX); break;
+            case ShipType::destroyer: ship = new Destroyer(m_sizeX); break; 
+            case ShipType::submarine: ship = new Submarine(m_sizeX); break;
+            case ShipType::cruiser: ship = new Cruiser(m_sizeX); break;
+            case ShipType::battleship: ship = new Battleship(m_sizeX); break;
+            case ShipType::carrier: ship = new Carrier(m_sizeX); break;
         }
 
         Cell* cell = ship->getFirstCell();
@@ -32,12 +41,6 @@ void BattleGrid::addShip (ShipType type)
         }
     } while (!ship);
     insertShip(ship);
-}
-
-BattleGrid::BattleGrid(int sizeX, int sizeY, string player_name) : BaseGrid(sizeX, sizeY, '~'), m_player_name (player_name), m_nb_ships (0)
-{
-    for (int i = 0; i < NB_SHIPS; i++)
-        m_ships[i] = nullptr;
 }
 
 CellShip* BattleGrid::isCellOccupied(const Cell & celltoTest)
@@ -61,11 +64,19 @@ void BattleGrid::setShipVisibility(bool visible) {
     }
 }
 
+Cell* BattleGrid::getCell(const int x, const int y)
+{
+    if (table[x][y])
+        return table[x][y];
+    else
+        return table[x][y] = new CellShip(x, y);
+}
+
 BattleGrid::~BattleGrid()
 {
-    for (int i = 0; i < sizeY; i++) {
-        for (int j = 0; j < sizeX; j++)
-            if (dynamic_cast <CellShip*> (table[i][j]))
+    for (int i = 0; i < m_sizeY; i++) {
+        for (int j = 0; j < m_sizeX; j++)
+            if (((CellShip*)table[i][j])->getShip()) // Les cellules des bateaux sont detruites via la classe Ship
                 table[i][j] = nullptr;
     }
 }

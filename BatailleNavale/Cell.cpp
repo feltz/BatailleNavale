@@ -16,6 +16,10 @@ CellShip::CellShip(int coord_max)
 	m_fill = '~';
 }
 
+unsigned char Cell::toChar() const {
+	return m_fill;
+}
+
 int CellShip::ask_for_coord(string coord_type, int max) {
 	string input;
 	int result = 0;
@@ -44,7 +48,8 @@ int CellShip::ask_for_coord(string coord_type, int max) {
 
 unsigned char CellShip::toChar() const {
 	switch (m_state) {
-		case CellState::normal: if (m_visible) return '#'; else return '~';
+		case CellState::tried: return '.';
+		case CellState::normal: if (m_visible) return m_fill; else return '~';
 		case CellState::touched: return 'x';
 		case CellState::dead: return 254; // black square
 	}
@@ -54,8 +59,18 @@ void CellShip::setState(const CellState & state) {
 	m_state = state;
 }
 
+Ship* CellShip::getShip()
+{
+	return m_ship;
+}
+
 void CellShip::touched()
 {
 	if (m_state == CellState::normal)
 		m_ship->touched(this);
+}
+
+void CellShip::tried()
+{
+	setState(CellState::tried);
 }

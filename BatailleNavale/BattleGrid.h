@@ -13,12 +13,13 @@ protected:
 	Ship* m_ships[NB_SHIPS];
 	string m_player_name;
 public: 
-	BattleGrid(int sizeX = 10, int sizeY = 10, string player_name = "");
+	BattleGrid(const int sizeX = 10, const int sizeY = 10, const string player_name = "");
 	~BattleGrid();
 	void addShip(ShipType);
 	void insertShip(Ship*);
 	CellShip* isCellOccupied(const Cell&);
 	void setShipVisibility(bool);
 	inline string getPlayerName () const { return m_player_name; }
+	Cell* getCell(const int x, const int y);
 };
 

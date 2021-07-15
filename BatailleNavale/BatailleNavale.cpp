@@ -37,9 +37,11 @@ void try_a_play(GridWithHeaders* player, BaseGrid** allGrids) {
     display_grids(allGrids, 3);
     cout << player->getPlayerName() << " joue." << endl;
     CellShip* touched;
-    if (touched = player->isCellOccupied(CellShip(10))) {
+    CellShip cellToTest(10);
+    if (touched = player->isCellOccupied(cellToTest))
         touched->touched();
-    }
+    else
+        ((CellShip*) (player->getCell(cellToTest.getX(), cellToTest.getY())))->tried();
 }
 
 

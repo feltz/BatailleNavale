@@ -26,7 +26,7 @@ string Ship::get_text() {
 void Ship::createCells(const Cell& begin, bool hor) {
 	if (hor)
 		for (int i = 0; i < m_nb_cells; i++)
-			m_cells[i] = new CellShip(begin.getX() + i, begin.getY() , this);
+			m_cells[i] = new CellShip(begin.getX() + i, begin.getY(), this);
 	else
 		for (int i = 0; i < m_nb_cells; i++)
 			m_cells[i] = new CellShip(begin.getX(), begin.getY() + i, this);

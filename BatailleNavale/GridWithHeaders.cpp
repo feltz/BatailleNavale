@@ -20,7 +20,7 @@ string GridWithHeaders::getLineAsString(int pos)
 string GridWithHeaders::getHeaderLine()
 {
 	string buffer = "  ";
-	for (int j = 0; j < sizeX; j++)
+	for (int j = 0; j < m_sizeX; j++)
 		buffer += char(65 + j);
 	return buffer;
 }
@@ -31,16 +31,16 @@ string GridWithHeaders::getPlayerLine()
 }
 
 string GridWithHeaders::getFirstLineAsString() {
-	iterPos = -3;
+	m_iterPos = -3;
 	return getPlayerLine();
 }
 
 string GridWithHeaders::getNextLineAsString() {
-	iterPos++;
-	if (iterPos == -1)
+	m_iterPos++;
+	if (m_iterPos == -1)
 		return getHeaderLine();
-	else if (iterPos >= 0 && iterPos < sizeY)
-		return getLineAsString(iterPos);
+	else if (m_iterPos >= 0 && m_iterPos < m_sizeY)
+		return getLineAsString(m_iterPos);
 	else
 		return string ("");
 }
