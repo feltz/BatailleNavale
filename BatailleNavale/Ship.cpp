@@ -1,6 +1,7 @@
 #include "Ship.h"
 #include "Cell.h"
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 Ship::Ship(const int x, const int y, int nb_cells, bool hor) : m_nb_cells(nb_cells), m_lifes(nb_cells)
@@ -10,9 +11,15 @@ Ship::Ship(const int x, const int y, int nb_cells, bool hor) : m_nb_cells(nb_cel
 
 Ship::Ship(int coord_max, int nb_cells, string text) : m_nb_cells(nb_cells), m_lifes(nb_cells), m_text (text)
 {
-	cout << "Saisie du " + m_text << endl;
-	CellShip begin = CellShip(coord_max);
-	createCells(begin, ask_for_direction());
+	if (text.length() > 0) {
+		cout << "Saisie du " + m_text << endl;
+		CellShip begin = CellShip(coord_max);
+		createCells(begin, ask_for_direction());
+	}
+	else {
+		int max = coord_max - nb_cells;
+		createCells(Cell(rand() % max, rand() % max), rand() % 2 == 1);
+	}
 }
 
 int Ship::get_nb_cells() {

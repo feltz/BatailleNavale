@@ -3,10 +3,36 @@
 
 #include <iostream>
 #include <exception>
+#include <cstdlib>
 #include "GridWithHeaders.h"
 #include "BaseGrid.h"
 #include "Ship.h"
 using namespace std;
+
+int ask_for_menu() {
+    string input;
+    int result = 0;
+    system("cls");
+    cout << "1. Jeu contre l'ordinateur avec placement manuel des bateaux" << endl;
+    cout << "2. Jeu contre l'ordinateur avec placement au hasard des bateaux du joueur" << endl;
+    cout << "3. 2 joueurs avec placement mamuel des bateaux" << endl;
+    cout << "4. 2 joueurs avec hasard au hasard des bateaux des joueurs" << endl << endl;
+    cout << "     Votre choix : ";
+    while (!result) {
+        cin >> input;
+        try {
+            result = stoi(input);
+        }
+        catch (...) {}
+        if (result < 1 || result > 4) {
+            result = 0;
+            cout << "Veuillez saisir un chiffre entre 1 et 4" << endl;
+            cout << "     Votre choix : ";
+        }
+        else
+            return result;
+    }
+}
 
 void display_grids(BaseGrid** grids, int nb_grids) {
     string line;
@@ -47,22 +73,32 @@ void try_a_play(GridWithHeaders* player, BaseGrid** allGrids) {
 
 int main()
 {
-    const int DEBUG = true;
+    srand((unsigned int)time(0)); // On initialise les nombres aléatoires
     GridWithHeaders *player1 = new GridWithHeaders(10, 10, string ("Joueur 1")), *player2 = new GridWithHeaders(10, 10, string ( "Joueur 2"));
     BaseGrid *space = new BaseGrid(10, 14);
     BaseGrid* grids[3] = { player1, space, player2 };
+    int menu = ask_for_menu();
 
-    if (!DEBUG) {
+    if (menu == 3) {
         enter_ships(player1, grids);
         player1->setShipVisibility(false);
         enter_ships(player2, grids);
     }
-    else {
-        player1->insertShip(new Destroyer(1, 1));  player1->insertShip(new Submarine(2, 3));
-        player1->insertShip(new Cruiser(3, 4));  player1->insertShip(new Battleship(5, 5));  player1->insertShip (new Carrier(4, 6));
+    else if (menu == 4) {
+        player1->insertShip(new Destroyer(10, true));  player1->insertShip(new Submarine(10, true));
+        player1->insertShip(new Cruiser(10, true));  player1->insertShip(new Battleship(10, true));  player1->insertShip (new Carrier(10, true));
+        display_grids(grids, 3);
+        system("pause");
+        system("cls");
         player1->setShipVisibility(false);
-        player2->insertShip(new Destroyer(1, 1));  player2->insertShip(new Submarine(2, 3));
-        player2->insertShip(new Cruiser(3, 4)); player2->insertShip(new Battleship(5, 5)); player2->insertShip(new Carrier(4, 6));
+        player2->insertShip(new Destroyer(10, true));  player2->insertShip(new Submarine(10, true));
+        player2->insertShip(new Cruiser(10, true)); player2->insertShip(new Battleship(10, true)); player2->insertShip(new Carrier(10, true));
+        display_grids(grids, 3);
+        system("pause");
+    }
+    else {
+        cout << " Pas encore implemente." << endl;
+        exit(0);
     }
     player2->setShipVisibility(false);
 
