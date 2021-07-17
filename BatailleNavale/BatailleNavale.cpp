@@ -58,18 +58,33 @@ void enter_ships(GridWithHeaders *gridToEnter, BaseGrid **allGrids) {
     }
 }
 
-void try_a_play(GridWithHeaders* player, BaseGrid** allGrids) {
+void try_a_play(GridWithHeaders* player, GridWithHeaders* anti_player, BaseGrid** allGrids) {
     system("cls");
     display_grids(allGrids, 3);
     cout << player->getPlayerName() << " joue." << endl;
-    CellShip* touched;
-    CellShip cellToTest(10);
-    if (touched = player->isCellOccupied(cellToTest))
-        touched->touched();
+    CellShip* touched, * cellToTest;
+    if (player->isComputer())
+        cellToTest = player->getNewCellToPlay(anti_player->getDeadShips());
     else
-        ((CellShip*) (player->getCell(cellToTest.getX(), cellToTest.getY())))->tried();
+        cellToTest = new CellShip(10);
+    if (touched = anti_player->isCellOccupied(*cellToTest)) {
+        touched->touched();
+        if (player->isComputer())
+            player->computerTouchedPlayer(touched);
+    }
+    else
+        ((CellShip*) (anti_player->getCell(cellToTest->getX(), cellToTest->getY())))->tried();
+    delete cellToTest;
 }
 
+void ships_random(BattleGrid* grid) {
+    grid->insertShip(new Destroyer(10, true));  
+    grid->insertShip(new Submarine(10, true));
+    grid->insertShip(new Cruiser(10, true)); 
+    grid->insertShip(new Cruiser(10, true));
+    grid->insertShip(new Battleship(10, true)); 
+    grid->insertShip(new Carrier(10, true));
+}
 
 int main()
 {
@@ -85,26 +100,32 @@ int main()
         enter_ships(player2, grids);
     }
     else if (menu == 4) {
-        player1->insertShip(new Destroyer(10, true));  player1->insertShip(new Submarine(10, true));
-        player1->insertShip(new Cruiser(10, true));  player1->insertShip(new Battleship(10, true));  player1->insertShip (new Carrier(10, true));
+        ships_random(player1);
         display_grids(grids, 3);
         system("pause");
         system("cls");
         player1->setShipVisibility(false);
-        player2->insertShip(new Destroyer(10, true));  player2->insertShip(new Submarine(10, true));
-        player2->insertShip(new Cruiser(10, true)); player2->insertShip(new Battleship(10, true)); player2->insertShip(new Carrier(10, true));
+        ships_random(player2);
         display_grids(grids, 3);
         system("pause");
     }
-    else {
-        cout << " Pas encore implemente." << endl;
-        exit(0);
+    else if (menu == 1 || menu == 2) { 
+        ships_random(player2);
+        player2->setComputer();
+        if (menu == 1)
+            enter_ships(player1, grids);
+        else {
+            ships_random(player1);
+            player2->setShipVisibility(false);
+            display_grids(grids, 3);
+            system("pause");
+        }
     }
     player2->setShipVisibility(false);
 
-
     do {
-        try_a_play(player1, grids);
+        try_a_play(player1, player2, grids);
+        try_a_play(player2, player1, grids);
     } while (true);
 
     delete player1; 

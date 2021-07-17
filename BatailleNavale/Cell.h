@@ -32,12 +32,14 @@ private:
 	int ask_for_coord(string coord_type, int max);
 	Ship* m_ship = nullptr;
 public:
+	int m_proba = 0;
 	CellShip(int x, int y, Ship* ship = nullptr) : Cell(x, y, ship == nullptr ? '~' : '#'), m_ship(ship) {};
 	CellShip(int coord_max);
 	unsigned char toChar() const;
 	void touched();
 	void tried();
 	void setState(const CellState&);
+	inline CellState getState() const { return m_state; }
 	Ship* getShip();
 };
 

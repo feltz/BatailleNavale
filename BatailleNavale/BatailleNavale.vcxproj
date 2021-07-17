@@ -144,11 +144,13 @@
     <ClCompile Include="BaseGrid.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="GridWithHeaders.cpp" />
+    <ClCompile Include="MiniTab.cpp" />
     <ClCompile Include="Ship.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleGrid.h" />
     <ClInclude Include="Cell.h" />
+    <ClInclude Include="MiniTab.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="BaseGrid.h" />
     <ClInclude Include="GridWithHeaders.h" />
